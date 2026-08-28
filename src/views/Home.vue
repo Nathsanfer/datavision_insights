@@ -76,26 +76,27 @@ import router from "../router";
 
     <!-- Problem and Solution Section -->
     <section id="desafio" class="h-170 mt-10 bg-while flex flex-col justify-center">
-      <div class="h-30 flex justify-center items-center flex-col">
+        <div class="h-30 flex justify-center items-center flex-col">
         <h2 class="font-aclonica text-[50px]">Do problema à solução </h2>
         <p>Entenda os desafios que a sua empresa enfrenta e como o DataVision resolve.</p>
-      </div>
-      <div class="h-140 flex justify-center items-center">
+        </div>
+        <div class="h-140 relative flex justify-center items-center">
         <div class="h-130 w-130 rounded-xl" style="background-color: rgba(82, 118, 30, 0.06);">
             <div class="border-2 border-[#52761E] w-32 flex justify-center items-center p-1 rounded-xl mt-5 ml-5"><p class="text-[13px]">O PROBLEMA</p></div>
-            
+            <h3 class="text-[25px] w-118 font-semibold ml-5 mt-5">Dados desconectados, decisões no escuro</h3>
+            <p class="w-118 ml-5 mt-4">Informações espalhadas em planilhas, processos manuais, e falta de visiabilidade impedem sua empresa de enxergar o que realmente importa.</p>
         </div>
-        <div class="h-full w-40 flex justify-center items-center">
-          <img
-            src="../assets/icons/circle.png"
-            alt="Circulo listrado"
-            class="w-40 h-40"
-          />
-        </div>
+        <img
+          src="../assets/icons/circle.png"
+          alt="Circulo listrado"
+          class="relative z-10 w-50 h-50 -mx-6 -mt-8"
+        />
         <div class="h-130 w-130 rounded-xl" style="background-color: rgba(82, 118, 30, 0.06);">
             <div class="border-2 border-[#52761E] w-32 flex justify-center items-center p-1 rounded-xl mt-5 ml-5"><p class="text-[13px]">A SOLUÇÃO</p></div>
+            <h3 class="text-[25px] w-118 font-semibold ml-5 mt-5">Inteligência de dados para impulsionar resultados</h3>
+            <p class="w-118 ml-5 mt-4">O DataVision centraliza, organiza e transforma seus dados em informações estratégicas, gerando clareza e base sólida para decisões mais assertivas.</p>
         </div>
-      </div>
+        </div>
     </section>
 
     <section id="demostracao" class="h-100 bg-while">
