@@ -4,6 +4,9 @@
 :root {
   font-family: 'Comfortaa', sans-serif;
   --font-aclonica: 'Aclonica', sans-serif;
+  --color-bottom: #F7F8F3;
+  --color-highlight: #52761e;
+  --color-highlight-dark: #26351F;
 }
 
 .font-aclonica {
@@ -12,4 +15,6 @@
 
 body {
   font-family: 'Comfortaa', sans-serif;
+  background-color: #F7F8F3;
 }
+
