@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Comfortaa:wght@300..700&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: 'Comfortaa', sans-serif;
+  --font-aclonica: 'Aclonica', sans-serif;
+  --color-bottom: #F7F8F3;
+  --color-highlight: #52761e;
+  --color-highlight-dark: #26351F;
+}
+
+.font-aclonica {
+  font-family: 'Aclonica', sans-serif;
+}
+
+body {
+  font-family: 'Comfortaa', sans-serif;
+  background-color: #F7F8F3;
+}
