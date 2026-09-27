@@ -3,11 +3,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 // Importa as views
 
 import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
 
 // Define as rotas
 
 const routes = [
-    { path: '/', component: Home }
+    { path: '/', component: Home },
+    { path: '/login', component: Login }
 ]
 
 const router  = createRouter({
