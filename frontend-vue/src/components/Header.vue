@@ -4,7 +4,6 @@
             <a href="#top" class="font-aclonica text-2xl tracking-wide text-[#52761e]">DataVision</a>
             <nav class="hidden items-center gap-8 text-sm text-[#555] md:flex">
                 <a href="#desafio" class="transition-colors hover:text-[#52761e]">Desafio</a>
-                <a href="#planos" class="transition-colors hover:text-[#52761e]">Planos</a>
                 <a href="#faq" class="transition-colors hover:text-[#52761e]">FAQ</a>
             </nav>
             <RouterLink to="/login"
