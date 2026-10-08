@@ -36,7 +36,6 @@ function handleSubmit() {
         <section class="flex h-screen min-h-0 min-w-0 flex-1 flex-col px-6 py-5 sm:px-12 sm:py-8 lg:px-16 xl:px-24">
             <div class="flex items-center justify-between lg:justify-end">
                 <RouterLink to="/" class="font-aclonica text-xl text-[#52761e] lg:hidden">DataVision</RouterLink>
-                <p class="text-sm text-[#6c7566]">Ainda não tem uma conta? <a href="#contato" class="font-bold text-[#52761e] hover:underline">Fale conosco</a></p>
             </div>
 
             <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-6 sm:py-12">
@@ -79,10 +78,12 @@ function handleSubmit() {
                     <p v-if="submitted" class="rounded-lg bg-[#edf4e5] px-4 py-3 text-center text-sm text-[#52761e]">Acesso solicitado. Conectando ao seu painel...</p>
                 </form>
 
+                <p class="mt-6 text-center text-sm text-[#70786b]">Ainda não possui uma conta?
+                    <RouterLink to="/register" class="font-bold text-[#52761e] hover:underline">Criar uma conta</RouterLink>
+                </p>
                 <div class="mt-8 flex items-center gap-4 text-xs text-[#a0a99b] sm:mt-12"><span class="h-px flex-1 bg-[#dfe4da]"></span><span>Seus dados estão protegidos</span><span class="h-px flex-1 bg-[#dfe4da]"></span></div>
             </div>
 
-            <p class="text-center text-xs text-[#a0a99b] lg:text-right">© 2024 DataVision Insights</p>
         </section>
     </main>
 </template>
