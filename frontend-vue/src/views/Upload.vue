@@ -1,9 +1,11 @@
 <script setup>
 import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
 import * as XLSX from "xlsx";
 import { useUploadStore } from "../stores/uploadStore.js";
 
 const upload = useUploadStore();
+const router = useRouter();
 const fileInput = ref(null);
 
 const formatarNumero = (valor) => {
@@ -26,6 +28,10 @@ const progresso = computed(() => {
 
 function abrirSeletor() {
   fileInput.value?.click();
+}
+
+function continuarParaInsights() {
+  router.push("/insights");
 }
 
 async function aoSelecionaArquivo(event) {
@@ -173,6 +179,18 @@ async function processarArquivo() {
           </tr>
         </tbody>
       </table>
+    </div>
+    <div
+      v-if="!upload.inconsistencias.length && !upload.erros.length"
+      class="mt-5 flex justify-end"
+    >
+      <button
+        type="button"
+        class="rounded-xl bg-[#52761e] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_rgba(82,118,30,0.18)] transition hover:bg-[#3f5e15]"
+        @click="continuarParaInsights"
+      >
+        Continuar para insights
+      </button>
     </div>
   </div>
 

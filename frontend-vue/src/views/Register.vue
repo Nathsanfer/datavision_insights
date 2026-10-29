@@ -1,15 +1,31 @@
 <script setup>
 import { ref } from 'vue'
+import api from '../services/api'
 
-const showPassword = ref(false)
-const submitted = ref(false)
 const name = ref('')
 const email = ref('')
-const phone = ref('')
 const password = ref('')
+const mensagem = ref('')
+const submitted = ref(false)
+const showPassword = ref(false)
+const loading = ref(false)
 
-function handleSubmit() {
-    submitted.value = true
+async function cadastrar() {
+    try {
+        mensagem.value = ''
+        loading.value = true
+        await api.post('/api/auth/cadastro', {
+            nome: name.value,
+            email: email.value,
+            senha: password.value
+        })
+        submitted.value = true
+        mensagem.value = 'Solicitação enviada. Aguarde a aprovação do administrador.'
+    } catch (e) {
+        mensagem.value = e.response?.data?.message || 'Erro ao tentar cadastrar. Tente novamente.'
+    } finally {
+        loading.value = false
+    }
 }
 </script>
 
@@ -47,7 +63,7 @@ function handleSubmit() {
                     <p class="mt-3 text-sm leading-6 text-[#70786b]">Cadastre-se para acessar todo o potencial da DataVision.</p>
                 </div>
 
-                <form class="space-y-4" @submit.prevent="handleSubmit">
+                <form class="space-y-4" @submit.prevent="cadastrar">
                     <label class="block">
                         <span class="mb-2 block text-sm font-bold text-[#3d4739]">Nome completo</span>
                         <span class="input-wrap flex items-center rounded-xl border border-[#d5dbcf] bg-white px-4 transition focus-within:border-[#52761e] focus-within:ring-4 focus-within:ring-[#52761e]/10">
@@ -64,38 +80,28 @@ function handleSubmit() {
                         </span>
                     </label>
 
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <label class="block">
-                        <span class="mb-2 block text-sm font-bold text-[#3d4739]">Telefone</span>
-                        <span class="input-wrap flex items-center rounded-xl border border-[#d5dbcf] bg-white px-4 transition focus-within:border-[#52761e] focus-within:ring-4 focus-within:ring-[#52761e]/10">
-                            <svg aria-hidden="true" class="mr-3 h-5 w-5 shrink-0 text-[#8a9583]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6.6 3.5h3l1.5 4-2.1 1.7a14.6 14.6 0 0 0 5.8 5.8l1.7-2.1 4 1.5v3c0 1.1-.9 2-2 2C10.5 19.4 4.6 13.5 4.6 5.5c0-1.1.9-2 2-2Z"/></svg>
-                            <input v-model="phone" required type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 99999-9999" class="h-13 w-full bg-transparent text-sm text-[#20251c] outline-none placeholder:text-[#a7afa2]" />
-                        </span>
-                    </label>
-
                     <label class="block">
                         <span class="mb-2 block text-sm font-bold text-[#3d4739]">Senha</span>
                         <span class="input-wrap flex items-center rounded-xl border border-[#d5dbcf] bg-white px-4 transition focus-within:border-[#52761e] focus-within:ring-4 focus-within:ring-[#52761e]/10">
                             <svg aria-hidden="true" class="mr-3 h-5 w-5 shrink-0 text-[#8a9583]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-                            <input v-model="password" required minlength="6" :type="showPassword ? 'text' : 'password'" placeholder="6 caracteres" class="h-13 w-full bg-transparent text-sm text-[#20251c] outline-none placeholder:text-[#a7afa2]" />
+                            <input v-model="password" required minlength="8" :type="showPassword ? 'text' : 'password'" placeholder="8+ caracteres, letras e números" class="h-13 w-full bg-transparent text-sm text-[#20251c] outline-none placeholder:text-[#a7afa2]" />
                             <button type="button" :aria-label="showPassword ? 'Ocultar senha' : 'Mostrar senha'" class="ml-2 text-[#8a9583] transition hover:text-[#52761e]" @click="showPassword = !showPassword">
                                 <svg v-if="!showPassword" aria-hidden="true" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
                                 <svg v-else aria-hidden="true" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 3 18 18M10.6 6.2A10.8 10.8 0 0 1 12 6c6 0 9.5 6 9.5 6a17 17 0 0 1-3.1 3.8M6.2 6.8C3.8 8.4 2.5 12 2.5 12s3.5 6 9.5 6c1.4 0 2.6-.3 3.7-.8"/></svg>
                             </button>
                         </span>
                     </label>
-                    </div>
 
                     <label class="flex cursor-pointer items-start gap-2 pt-1 text-xs leading-5 text-[#6c7566]">
                         <input required type="checkbox" class="mt-1 h-4 w-4 shrink-0 accent-[#52761e]" />
                         <span>Concordo com os termos de uso e a política de privacidade.</span>
                     </label>
 
-                    <button type="submit" class="group flex h-13 w-full items-center justify-center gap-3 rounded-xl bg-[#52761e] px-5 text-sm font-bold text-white shadow-lg shadow-[#52761e]/15 transition hover:bg-[#3f5e15] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#52761e]/20">
-                        Criar minha conta
+                    <p v-if="mensagem" :class="submitted ? 'bg-[#edf4e5] text-[#52761e]' : 'bg-[#fff0ed] text-[#b44d3c]'" class="rounded-lg px-4 py-3 text-center text-sm">{{ mensagem }}</p>
+                    <button type="submit" :disabled="loading" class="group flex h-13 w-full items-center justify-center gap-3 rounded-xl bg-[#52761e] px-5 text-sm font-bold text-white shadow-lg shadow-[#52761e]/15 transition hover:bg-[#3f5e15] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#52761e]/20 disabled:cursor-not-allowed disabled:opacity-60">
+                        {{ loading ? 'Enviando...' : 'Criar minha conta' }}
                         <svg aria-hidden="true" class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                     </button>
-                    <p v-if="submitted" class="rounded-lg bg-[#edf4e5] px-4 py-3 text-center text-sm text-[#52761e]">Cadastro realizado. Você já pode acessar sua conta.</p>
                 </form>
 
                 <p class="mt-6 text-center text-sm text-[#70786b]">Já possui uma conta?

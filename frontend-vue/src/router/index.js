@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
@@ -10,7 +11,9 @@ import Historic from '../views/Historic.vue'
 import Profile from '../views/Profile.vue'
 import AppLayout from '../layout/AppLayout.vue'
 
-const routes = [
+const router  = createRouter({
+    history: createWebHistory(),
+    routes: [
     { path: '/', component: Home },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
@@ -18,18 +21,20 @@ const routes = [
         path: '/',
         component: AppLayout,
         children: [
-            { path: 'dashboard', component: Dashboard },
-            { path: 'upload', component: Upload },
-            { path: 'insights', component: Insights },
-            { path: 'historic', component: Historic },
-            { path: 'profile', component: Profile }
+            { path: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
+            { path: 'upload', component: Upload, meta: { requiresAuth: true } },
+            { path: 'insights', component: Insights, meta: { requiresAuth: true } },
+            { path: 'historic', component: Historic, meta: { requiresAuth: true } },
+            { path: 'profile', component: Profile, meta: { requiresAuth: true } }
         ]
     }
 ]
+})
 
-const router  = createRouter({
-    history: createWebHistory(),
-    routes
+router.beforeEach((to) => {
+    const auth = useAuthStore()
+    if (to.meta.requiresAuth && !auth.logado) return '/login'
+    if (to.path === '/login' && auth.logado) return '/dashboard'
 })
 
 export default router

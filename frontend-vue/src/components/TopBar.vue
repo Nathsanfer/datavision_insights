@@ -1,10 +1,19 @@
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from '../stores/auth'
+import { useRouter } from 'vue-router'
 
+const auth = useAuthStore()
+const router = useRouter()
 const isMenuOpen = ref(false)
 
 function closeMenu() {
     isMenuOpen.value = false
+}
+
+function logout() {
+    auth.logout()
+    router.push('/login')
 }
 </script>
 
@@ -35,7 +44,7 @@ function closeMenu() {
 
             <div class="hidden items-center gap-4 lg:flex">
                 <span class="flex items-center gap-2 text-xs font-semibold text-[#84917b]"><span class="h-2 w-2 rounded-full bg-[#8db84e] shadow-[0_0_0_4px_rgba(141,184,78,0.14)]"></span>Dados seguros</span>
-                <RouterLink to="/" class="rounded-xl border border-[#d8e1d1] px-4 py-2.5 text-sm font-bold text-[#52761e] transition hover:border-[#52761e] hover:bg-[#f0f5eb]">Sair</RouterLink>
+                    <button type="button" class="rounded-xl border border-[#d8e1d1] px-4 py-2.5 text-sm font-bold text-[#52761e] transition hover:border-[#52761e] hover:bg-[#f0f5eb]" @click="logout">Sair</button>
             </div>
 
             <button type="button" class="grid h-11 w-11 place-items-center rounded-xl border border-[#d8e1d1] bg-white text-[#52761e] lg:hidden" :aria-expanded="isMenuOpen" aria-controls="mobile-navigation" aria-label="Abrir menu" @click="isMenuOpen = !isMenuOpen">

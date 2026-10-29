@@ -1,13 +1,28 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 
-const showPassword = ref(false)
-const submitted = ref(false)
 const email = ref('')
 const password = ref('')
+const erro = ref('')
+const showPassword = ref(false)
+const submitted = ref(false)
+const loading = ref(false)
+const router = useRouter()
+const auth = useAuthStore()
 
-function handleSubmit() {
-    submitted.value = true
+async function entrar() {
+    try {
+        erro.value = ''
+        loading.value = true
+        await auth.login(email.value, password.value)
+        router.push('/dashboard')
+    } catch (e) {
+        erro.value = e.response?.data?.message || 'Erro ao tentar entrar. Tente novamente.'
+    } finally {
+        loading.value = false
+    }
 }
 </script>
 
@@ -45,7 +60,7 @@ function handleSubmit() {
                     <p class="mt-3 text-sm leading-6 text-[#70786b]">Acesse seu painel e continue de onde parou.</p>
                 </div>
 
-                <form class="space-y-4 sm:space-y-5" @submit.prevent="handleSubmit">
+                <form class="space-y-4 sm:space-y-5" @submit.prevent="entrar">
                     <label class="block">
                         <span class="mb-2 block text-sm font-bold text-[#3d4739]">E-mail corporativo</span>
                         <span class="input-wrap flex items-center rounded-xl border border-[#d5dbcf] bg-white px-4 transition focus-within:border-[#52761e] focus-within:ring-4 focus-within:ring-[#52761e]/10">
@@ -71,10 +86,11 @@ function handleSubmit() {
                         <a href="#recuperar" class="font-bold text-[#52761e] hover:underline">Esqueci minha senha</a>
                     </div>
 
-                    <RouterLink to="/dashboard" class="group flex h-13 w-full items-center justify-center gap-3 rounded-xl bg-[#52761e] px-5 text-sm font-bold text-white shadow-lg shadow-[#52761e]/15 transition hover:bg-[#3f5e15] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#52761e]/20">
-                        Entrar no sistema
+                    <p v-if="erro" class="rounded-lg bg-[#fff0ed] px-4 py-3 text-center text-sm text-[#b44d3c]">{{ erro }}</p>
+                    <button type="submit" :disabled="loading" class="group flex h-13 w-full items-center justify-center gap-3 rounded-xl bg-[#52761e] px-5 text-sm font-bold text-white shadow-lg shadow-[#52761e]/15 transition hover:bg-[#3f5e15] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#52761e]/20 disabled:cursor-not-allowed disabled:opacity-60">
+                        {{ loading ? 'Entrando...' : 'Entrar no sistema' }}
                         <svg aria-hidden="true" class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                    </RouterLink>
+                    </button>
                     <p v-if="submitted" class="rounded-lg bg-[#edf4e5] px-4 py-3 text-center text-sm text-[#52761e]">Acesso solicitado. Conectando ao seu painel...</p>
                 </form>
 

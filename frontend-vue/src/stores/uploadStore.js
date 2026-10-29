@@ -32,7 +32,7 @@ export const useUploadStore = defineStore("upload", {
         }
 
         if (!faturamentoTexto || !Number.isFinite(faturamento) || faturamento <= 0) {
-          motivos.push("Faturamento deve ser maior que zero");
+          motivos.push("Faturamento não pode ser vazio e deve ser maior que zero");
         }
 
         if (!String(cliente.consultor || "").trim()) {

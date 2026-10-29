@@ -4,12 +4,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import java.time.LocalDate;
-import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name = "insight")
@@ -23,11 +22,11 @@ public class Insight {
     @Column (name = "id_insight")
     private Long idInsight;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn (name= "id_cliente", nullable = false)
     private Cliente cliente;
 
-    @ManyToMany 
+    @ManyToOne
     @JoinColumn (name= "id_contrato", nullable = false)
     private Contrato contrato;
 

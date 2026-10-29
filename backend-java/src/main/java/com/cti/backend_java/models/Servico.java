@@ -5,11 +5,12 @@ package com.cti.backend_java.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity 
 @Table(name = "servico")
@@ -32,19 +33,17 @@ public class Servico {
     @Column (name = "categoria", nullable = false)
     private String categoria;
 
-    @OneToMany 
-    @JoinColumn (name = "id_contrato", nullable = false)
-    private Contrato contrato;
+    @OneToMany(mappedBy = "servico")
+    private List<Contrato> contratos = new ArrayList<>();
 
     // Constructors
 
     public Servico() {}
 
-    public Servico(String nome, String descricao, String categoria, Contrato contrato) {
+    public Servico(String nome, String descricao, String categoria) {
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
-        this.contrato = contrato;
     }
 
     // Getters and Setters
@@ -81,12 +80,12 @@ public class Servico {
         this.categoria = categoria;
     }
 
-    public Contrato getContrato() {
-        return contrato;
+    public List<Contrato> getContratos() {
+        return contratos;
     }
 
-    public void setContrato(Contrato contrato) {
-        this.contrato = contrato;
+    public void setContratos(List<Contrato> contratos) {
+        this.contratos = contratos;
     }
 
 }
