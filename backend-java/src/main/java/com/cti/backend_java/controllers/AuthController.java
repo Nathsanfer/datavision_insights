@@ -1,5 +1,7 @@
 package com.cti.backend_java.controllers;
 
+// Importação das blibliotecas e classes necessários
+
 import com.cti.backend_java.models.Usuario;
 import com.cti.backend_java.repository.UsuarioRepository;
 import com.cti.backend_java.dto.*;
@@ -17,13 +19,18 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/api")
 public class AuthController {
-        private final AuthService service;
+
+    private final AuthService service;
     private final UsuarioRepository repository;
+
+    // Constructor 
 
     public AuthController(AuthService service, UsuarioRepository repository) {
         this.service = service;
         this.repository = repository;
     }
+
+    // POST - Cadastro de novos usuários
 
     @PostMapping("/auth/cadastro")
     @ResponseStatus(HttpStatus.CREATED)
@@ -31,7 +38,6 @@ public class AuthController {
         return service.cadastrar(dados); // Controller delega a regra ao Service.
     }
 
-    // Devolve a mensagem do primeiro campo inválido, em vez do texto técnico padrão do Spring.
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> dadosInvalidos(MethodArgumentNotValidException ex) {
         String mensagem = ex.getBindingResult().getFieldErrors().stream()
@@ -41,10 +47,14 @@ public class AuthController {
         return ResponseEntity.badRequest().body(Map.of("message", mensagem));
     }
 
+    // POST - Login de usuários 
+
     @PostMapping("/auth/login")
     public LoginResponse login(@Valid @RequestBody LoginRequest dados) {
         return service.entrar(dados);
     }
+
+    // GET - Retorna os dados do usuário autenticado
 
     @GetMapping("/auth/me")
     public UsuarioResponse me(Principal principal) {
@@ -53,11 +63,14 @@ public class AuthController {
         return UsuarioResponse.de(usuario);
     }
 
-    // Qualquer usuário autenticado altera os próprios dados; devolve novo token pois o e-mail pode ter mudado.
+    // PUT - Atualiza os dados do usuário autenticado
+
     @PutMapping("/auth/me")
     public LoginResponse atualizarMe(Principal principal, @Valid @RequestBody AtualizarMeRequest dados) {
         return service.atualizarMeusDados(principal.getName(), dados);
     }
+
+    // GET - Teste de Rotas Públicas e Privadas
 
     @GetMapping("/publico")
     public Map<String, String> publico() { return Map.of("mensagem", "Rota pública"); }

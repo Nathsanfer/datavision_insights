@@ -1,5 +1,7 @@
 package com.cti.backend_java.services;
 
+// Importação das dependências necessárias
+
 import com.cti.backend_java.dto.*;
 import com.cti.backend_java.models.Perfil;
 import com.cti.backend_java.models.StatusUsuario;
@@ -13,11 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-@Service // Regras de negócio do cadastro e do login.
+@Service 
 public class AuthService {
+
     private final UsuarioRepository repository;
     private final PasswordEncoder encoder;
     private final JwtService jwt;
+
+    // Contructor
 
     public AuthService(UsuarioRepository repository, PasswordEncoder encoder, JwtService jwt) {
         this.repository = repository;
@@ -25,32 +30,36 @@ public class AuthService {
         this.jwt = jwt;
     }
 
+    // Método para cadastrar um novo usuário
+
     public UsuarioResponse cadastrar(CadastroRequest dados) {
         String email = dados.email().trim().toLowerCase(Locale.ROOT);
-        // BCrypt considera no máximo 72 bytes; comprimento não equivale a bytes em UTF-8.
+
         if (dados.senha().getBytes(StandardCharsets.UTF_8).length > 72) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senha muito longa para BCrypt");
         }
         if (repository.existsByEmailIgnoreCase(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já cadastrado");
         }
+
         Usuario usuario = new Usuario();
         usuario.setNome(dados.nome().trim());
         usuario.setEmail(email);
-        usuario.setSenhaHash(encoder.encode(dados.senha())); // Armazena apenas o hash.
-        usuario.setPerfil(Perfil.USER); // Cadastro público nunca define ADMIN.
-        usuario.setStatus(StatusUsuario.PENDENTE); // Só entra depois que o administrador aprovar.
+        usuario.setSenhaHash(encoder.encode(dados.senha())); 
+        usuario.setPerfil(Perfil.USER); // Cadastro padrão de usuário comum.
+        usuario.setStatus(StatusUsuario.PENDENTE); // Só realiza login após o administrador aprovar.
         return UsuarioResponse.de(repository.save(usuario));
     }
+
+    // Método para autenticar um usuário existente
 
     public LoginResponse entrar(LoginRequest dados) {
         Usuario usuario = repository.findByEmailIgnoreCase(dados.email().trim())
                 .orElse(null);
-        // Mesmo erro para usuário inexistente e senha inválida.
+
         if (usuario == null || !encoder.matches(dados.senha(), usuario.getSenhaHash())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos");
         }
-        // Só verifica o status depois da senha, para não revelar contas existentes a quem não as conhece.
         if (usuario.getStatus() == StatusUsuario.PENDENTE) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Seu cadastro aguarda aprovação do administrador");
         }
@@ -60,7 +69,8 @@ public class AuthService {
         return new LoginResponse(jwt.gerar(usuario), "Bearer", UsuarioResponse.de(usuario));
     }
 
-    // Atualiza os dados do próprio usuário. O token usa o e-mail como identidade, então é reemitido.
+    // Método para atualizar os dados do usuário autenticado
+
     public LoginResponse atualizarMeusDados(String emailAtual, AtualizarMeRequest dados) {
         Usuario usuario = repository.findByEmailIgnoreCase(emailAtual)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
@@ -68,7 +78,6 @@ public class AuthService {
         if (!novoEmail.equalsIgnoreCase(usuario.getEmail()) && repository.existsByEmailIgnoreCase(novoEmail)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já cadastrado");
         }
-        // Trocar a senha exige a senha atual, para que um token roubado não altere a conta.
         if (dados.novaSenha() != null && !dados.novaSenha().isBlank()) {
             if (dados.senhaAtual() == null || !encoder.matches(dados.senhaAtual(), usuario.getSenhaHash())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senha atual incorreta");

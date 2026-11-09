@@ -1,5 +1,7 @@
 package com.cti.backend_java.dto;
 
+// Importação das classes de validação
+
 import com.cti.backend_java.models.Perfil;
 import com.cti.backend_java.models.StatusUsuario;
 import com.cti.backend_java.models.Usuario;

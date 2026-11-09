@@ -38,7 +38,6 @@ function logout() {
                 <RouterLink to="/dashboard" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Dashboard</RouterLink>
                 <RouterLink to="/upload" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Upload</RouterLink>
                 <RouterLink to="/insights" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Insights</RouterLink>
-                <RouterLink to="/historic" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Histórico</RouterLink>
                 <RouterLink to="/profile" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Perfil</RouterLink>
             </nav>
 
@@ -53,7 +52,6 @@ function logout() {
         </div>
 
         <nav v-if="isMenuOpen" id="mobile-navigation" class="mx-auto mt-4 grid max-w-325 gap-1 border-t border-[#e2e8dd] pt-3 lg:hidden" aria-label="Navegação móvel">
-            <RouterLink v-for="item in [{ label: 'Dashboard', path: '/dashboard' }, { label: 'Upload', path: '/upload' }, { label: 'Insights', path: '/insights' }, { label: 'Histórico', path: '/historic' }, { label: 'Perfil', path: '/profile' }]" :key="item.path" :to="item.path" class="rounded-xl px-4 py-3 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb]" active-class="bg-[#52761e] text-white" @click="closeMenu">{{ item.label }}</RouterLink>
             <RouterLink to="/" class="mt-2 rounded-xl border border-[#d8e1d1] px-4 py-3 text-sm font-bold text-[#52761e]" @click="closeMenu">Sair</RouterLink>
         </nav>
     </header>

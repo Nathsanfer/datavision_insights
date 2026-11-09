@@ -1,5 +1,7 @@
 package com.cti.backend_java.controllers;
 
+// Importação das blibliotecas e classes necessários
+
 import com.cti.backend_java.dto.PerfilRequest;
 import com.cti.backend_java.dto.StatusUsuarioRequest;
 import com.cti.backend_java.dto.UsuarioResponse;
@@ -22,13 +24,18 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/admin/user")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')") // Somente administradores podem acessar essas rotas.
 public class AdminUsuarioController {
+
     private final UsuarioRepository repository;
+
+    // Constructor
 
     public AdminUsuarioController(UsuarioRepository repository) {
         this.repository = repository;
     }
+
+    // GET - Lista todos os usuários.
 
     @GetMapping("/user")
     public List<UsuarioResponse> listar() {
@@ -37,7 +44,8 @@ public class AdminUsuarioController {
                 .toList();
     }
 
-    // Aprova (ATIVO) ou recusa/bloqueia (BLOQUEADO) uma solicitação de cadastro.
+    // PATCH - Altera o status do usuário (ATIVO ou BLOQUEADO). 
+
     @PatchMapping("/{id}/status")
     public UsuarioResponse alterarStatus(@PathVariable Long id, @Valid @RequestBody StatusUsuarioRequest dados,
                                          Principal principal) {
@@ -47,7 +55,8 @@ public class AdminUsuarioController {
         return UsuarioResponse.de(repository.save(usuario));
     }
 
-    // Altera o perfil de acesso (USER ou ADMIN).
+    // PATCH - Altera o perfil do usuário (ADMIN ou USUARIO)
+
     @PatchMapping("/{id}/perfil")
     public UsuarioResponse alterarPerfil(@PathVariable Long id, @Valid @RequestBody PerfilRequest dados,
                                          Principal principal) {
@@ -57,6 +66,8 @@ public class AdminUsuarioController {
         return UsuarioResponse.de(repository.save(usuario));
     }
 
+    // DELETE - Exclui o usuário do sistema.
+    
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long id, Principal principal) {

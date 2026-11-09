@@ -1,5 +1,7 @@
 package com.cti.backend_java.config;
 
+// Importação das blibliotecas e classes necessários
+
 import com.cti.backend_java.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -20,10 +22,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig {
 
+    // Configuração para criptografar a senha  
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    // Configuração da segurança da aplicação
 
     @Bean
     public SecurityFilterChain filtro(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
@@ -36,17 +42,22 @@ public class SecurityConfig {
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((req, res, erro) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .accessDeniedHandler((req, res, erro) -> res.sendError(HttpServletResponse.SC_FORBIDDEN)))
+
+            // Define rotas públicas e liberadas para o usuário com perfil de administrador
+
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/cadastro", "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/publico").permitAll()
-                .requestMatchers("/error").permitAll() // Sem isso, erros 400/409/500 viram 401 na resposta.
+                .requestMatchers("/error").permitAll()
                 .requestMatchers("/admin/user/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/clientes/**").hasRole("ADMIN")
                 .anyRequest().authenticated())
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
+
+    // Configuração do CORS para permitir requisições de diferentes origens
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -58,7 +69,7 @@ public class SecurityConfig {
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.PUT.name(),
-                HttpMethod.PATCH.name(), // Usado na aprovação/bloqueio de cadastros pelo administrador.
+                HttpMethod.PATCH.name(), 
                 HttpMethod.DELETE.name(),
                 HttpMethod.OPTIONS.name()));
         configuration.setAllowedHeaders(List.of(

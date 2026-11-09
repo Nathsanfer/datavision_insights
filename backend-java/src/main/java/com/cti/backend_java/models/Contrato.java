@@ -22,6 +22,8 @@ import jakarta.persistence.Enumerated;
 @Check(constraints = "valor >= 0")
 
 public class Contrato {
+
+    // Atributos da Classe
     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,7 +66,7 @@ public class Contrato {
         this.status = status;
     }
 
-    // Getters and Setters
+    // Getters e Setters
 
     public Long getIdContrato() {
         return idContrato;

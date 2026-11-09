@@ -1,5 +1,7 @@
 package com.cti.backend_java.models;
 
+// Importação das bibliotecas
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -59,7 +61,7 @@ public class Telemetria {
         this.mensagemErro = mensagemErro;
     }
 
-    // Getters and Setters
+    // Getters e Setters
 
     public Long getIdTelemetria() {
         return idTelemetria;
