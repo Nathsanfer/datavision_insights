@@ -30,8 +30,9 @@ function abrirSeletor() {
   fileInput.value?.click();
 }
 
-function continuarParaInsights() {
-  router.push("/insights");
+async function continuarParaInsights() {
+  const ok = await upload.continuarParaInsights();
+  if (ok) router.push("/insights");
 }
 
 async function aoSelecionaArquivo(event) {
@@ -61,7 +62,7 @@ async function processarArquivo() {
 
   try {
     const buffer = await upload.arquivo.arrayBuffer();
-    const workbook = XLSX.read(buffer, { type: "array" });
+    const workbook = XLSX.read(buffer, { type: "array", cellDates: true });
     const planilha = workbook.Sheets[workbook.SheetNames[0]];
     const linhas = XLSX.utils.sheet_to_json(planilha, { defval: "" });
 
@@ -181,15 +182,16 @@ async function processarArquivo() {
       </table>
     </div>
     <div
-      v-if="!upload.inconsistencias.length && !upload.erros.length"
+      v-if="!upload.inconsistencias.length"
       class="mt-5 flex justify-end"
     >
       <button
         type="button"
-        class="rounded-xl bg-[#52761e] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_rgba(82,118,30,0.18)] transition hover:bg-[#3f5e15]"
+        :disabled="upload.enviando"
+        class="rounded-xl bg-[#52761e] px-5 py-3 text-sm font-bold text-white shadow-[0_8px_18px_rgba(82,118,30,0.18)] transition hover:bg-[#3f5e15] disabled:opacity-60"
         @click="continuarParaInsights"
       >
-        Continuar para insights
+        {{ upload.enviando ? "Processando..." : "Continuar para Insights" }}
       </button>
     </div>
   </div>

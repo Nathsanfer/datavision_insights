@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Upload from '../views/Upload.vue'
 import Insights from '../views/Insights.vue'
+import Historico from '../views/Historico.vue'
 import Profile from '../views/Profile.vue'
 import AppLayout from '../layout/AppLayout.vue'
 
@@ -23,6 +24,7 @@ const router  = createRouter({
             { path: 'dashboard', component: Dashboard, meta: { requiresAuth: true } },
             { path: 'upload', component: Upload, meta: { requiresAuth: true } },
             { path: 'insights', component: Insights, meta: { requiresAuth: true } },
+            { path: 'historico', component: Historico, meta: { requiresAuth: true } },
             { path: 'profile', component: Profile, meta: { requiresAuth: true } }
         ]
     }

@@ -38,6 +38,7 @@ function logout() {
                 <RouterLink to="/dashboard" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Dashboard</RouterLink>
                 <RouterLink to="/upload" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Upload</RouterLink>
                 <RouterLink to="/insights" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Insights</RouterLink>
+                <RouterLink to="/historico" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Histórico</RouterLink>
                 <RouterLink to="/profile" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#6d7768] transition hover:bg-[#f0f5eb] hover:text-[#52761e]" active-class="bg-[#52761e] text-white shadow-sm hover:bg-[#52761e] hover:text-white">Perfil</RouterLink>
             </nav>
 
