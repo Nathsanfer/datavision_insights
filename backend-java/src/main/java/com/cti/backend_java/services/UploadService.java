@@ -72,6 +72,12 @@ public class UploadService {
             if (!r.avisos().isEmpty()) comAviso++;                                 
             validas.add(paraPython(r));                                          
         }                                                                          
+        if (!rejeitadas.isEmpty()) {
+            throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "A validação do servidor encontrou problemas. Corrija a planilha e envie novamente. "
+                    + String.join(" // ", rejeitadas.subList(0, Math.min(5, rejeitadas.size())))
+                    + (rejeitadas.size() > 5 ? " (+" + (rejeitadas.size() - 5) + " linhas)" : ""));
+        }
         if (validas.isEmpty()) {                                                    
             throw new ApiException(HttpStatus.UNPROCESSABLE_ENTITY,                
                     "Nenhuma linha válida. Corrija a planilha e envie novamente."); 
@@ -79,9 +85,10 @@ public class UploadService {
 
         int recebidas = resultado.size() + descartadas;                            
         int invalidas = rejeitadas.size() + descartadas;                           
-        python.enviar(nome, recebidas, invalidas, comAviso, validas);              
+        Long loteId = python.enviar(nome, recebidas, invalidas, comAviso, validas);
         Map<String, Object> saida = new LinkedHashMap<>();                        
         saida.put("arquivoNome", nome);                                            
+        saida.put("loteId", loteId);
         saida.put("status", "PROCESSADO");                                         
         saida.put("totalLinhas", recebidas);                                    
         saida.put("linhasValidas", validas.size());                                

@@ -37,7 +37,7 @@ public class PythonEtlService {
         this.json = json;
     }
 
-    public void enviar(String arquivoNome, int recebidas, int invalidas, int comAviso, List<Map<String, Object>> linhas) {
+    public Long enviar(String arquivoNome, int recebidas, int invalidas, int comAviso, List<Map<String, Object>> linhas) {
         Map<String, Object> pedido = new LinkedHashMap<>();
         pedido.put("arquivoNome", arquivoNome);
         pedido.put("recebidas", recebidas);
@@ -50,13 +50,13 @@ public class PythonEtlService {
                     .timeout(Duration.ofMinutes(5))
                     .header("Content-Type", "application/json; charset=utf-8")
                     .POST(HttpRequest.BodyPublishers.ofByteArray(json.writeValueAsBytes(pedido)));
-            chamar(req);
+            return chamar(req);
         } catch (JacksonException e) {
             throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao montar o JSON: " + e.getMessage());
         }
     }
 
-    private void chamar(HttpRequest.Builder req) {
+    private Long chamar(HttpRequest.Builder req) {
         if (!chave.isEmpty()) {
             req.header("X-ETL-Key", chave);
         }
@@ -65,6 +65,12 @@ public class PythonEtlService {
             if (resp.statusCode() != 200) {
                 throw new ApiException(HttpStatus.BAD_GATEWAY,
                         "O serviço Python respondeu " + resp.statusCode() + ": " + resp.body());
+            }
+            try {
+                var no = json.readTree(resp.body()).get("loteId");
+                return no == null || no.isNull() ? null : no.asLong();
+            } catch (JacksonException e) {
+                return null;
             }
         } catch (IOException e) {
             throw new ApiException(HttpStatus.SERVICE_UNAVAILABLE,
