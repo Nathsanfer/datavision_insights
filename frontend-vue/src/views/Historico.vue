@@ -163,9 +163,9 @@ async function excluir(l) {
       <div class="mt-4 overflow-hidden rounded-2xl border border-[#e0e8da] bg-white shadow-[0_10px_30px_rgba(38,53,31,0.05)]">
         <div v-if="carregando" class="p-10 text-center text-sm text-[#788273]">Carregando histórico...</div>
 
-        <div v-else-if="!filtrados.length" class="p-12 text-center">
+        <div v-else-if="!filtrados.length" class="p-8 text-center sm:p-12">
           <p class="font-aclonica text-xl text-[#26351f]">{{ lotes.length ? "Nenhum lote encontrado" : "Nenhum lote ainda" }}</p>
-          <p class="mt-2 text-sm text-[#788273]">{{ lotes.length ? "Ajuste a busca ou o filtro." : "Envie sua primeira planilha para começar." }}</p>
+          <p class="mt-2 mb-5 text-sm text-[#788273]">{{ lotes.length ? "Ajuste a busca ou o filtro." : "Envie sua primeira planilha para começar." }}</p>
           <RouterLink v-if="!lotes.length" to="/upload" class="mt-5 inline-block rounded-xl bg-[#52761e] px-5 py-3 text-sm font-bold text-white">Ir para o upload</RouterLink>
         </div>
 
