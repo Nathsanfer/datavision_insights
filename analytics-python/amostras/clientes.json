@@ -1,0 +1,26 @@
+[
+  {
+    "codigoCliente": "CTI001",
+    "nomeCliente": "Metalúrgica Horizonte",
+    "consultor": "Ana Souza",
+    "segmento": "IND.",
+    "nivelCliente": "A",
+    "faturamentoAnual": 1850000,
+    "servicosContratados": "Internet Dedicada;Firewall",
+    "dataContratacao": "2025-01-15",
+    "cidade": "Campinas",
+    "uf": "SP"
+  },
+  {
+    "codigoCliente": "CTI002",
+    "nomeCliente": "Mercado Central",
+    "consultor": "carlos lima",
+    "segmento": "Comercio",
+    "nivelCliente": "B",
+    "faturamentoAnual": 420000,
+    "servicosContratados": "Backup;Firewall",
+    "dataContratacao": "2025-01-30",
+    "cidade": "Hortolândia",
+    "uf": "SP"
+  }
+]
